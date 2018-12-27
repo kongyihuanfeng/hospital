@@ -1,5 +1,6 @@
 package com.yuanjun.weixindemo.service.distribution.impl;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -29,22 +30,33 @@ public class InformationDistributionImpl implements InformationDistributionServi
 	@Override
 	public void clientSendMessage(String userid, String message) {
 		// TODO Auto-generated method stub
-		List<Session> sessions = DistributionUtil.clientSession.get(userid);
+		String serverid = DistributionUtil.clientToServer.get(userid);
+		List<Session> sessions = DistributionUtil.serverSession.get(serverid);
 		for(Session session :sessions) {
 			if(session.isOpen())
-				session.getAsyncRemote().sendText(message);
+				try {
+					session.getBasicRemote().sendText(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 
 
 	@Override
-	public void serverSendMessage(String serveruserid, String message) {
+	public void serverSendMessage(String clientuserid, String message) {
 		// TODO Auto-generated method stub
-		List<Session> sessions = DistributionUtil.clientSession.get(serveruserid);
+		List<Session> sessions = DistributionUtil.clientSession.get(clientuserid);
 		for(Session session :sessions) {
 			if(session.isOpen())
-				session.getAsyncRemote().sendText(message);
+				try {
+					session.getBasicRemote().sendText(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 

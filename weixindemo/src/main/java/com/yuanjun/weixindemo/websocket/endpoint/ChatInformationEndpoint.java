@@ -28,13 +28,8 @@ public class ChatInformationEndpoint {
     
     public static InformationDistributionService distributionService;
     
-    
-    
-    public static InformationDistributionService getDistributionService() {
-		return distributionService;
-	}
     @Autowired
-	public static void setDistributionService(InformationDistributionService distributionService) {
+	public void setDistributionService(InformationDistributionService distributionService) {
 		ChatInformationEndpoint.distributionService = distributionService;
 	}
 
@@ -50,6 +45,7 @@ public class ChatInformationEndpoint {
         onlineNumber++;
         List<Session> sessions = getSessions(role, userid);
         //添加session
+        System.out.println(session.getId());
         sessions.add(session);
         if(Objects.equals("server", role)) {
         	//添加客服 承載数
@@ -65,6 +61,7 @@ public class ChatInformationEndpoint {
     	if(Objects.equals("server", role)) {
     		if(!DistributionUtil.serverSessionSequency.contains(userid)) {
     			UserSequency userSequency = new UserSequency();
+    			userSequency.setUserid(userid);
     			DistributionUtil.serverSessionSequency.add(userSequency);
     		}
     	}
@@ -88,25 +85,24 @@ public class ChatInformationEndpoint {
     	List<Session> sessions = null;
         if(Objects.equals(role, "client")) {
         	if(DistributionUtil.clientSession.containsKey(userid)) {
+        		sessions = DistributionUtil.clientSession.get(userid);
+        	}else {
         		sessions = new CopyOnWriteArrayList<Session>();
         		DistributionUtil.clientSession.putIfAbsent(userid, sessions);
-        	}else {
-        		sessions = DistributionUtil.clientSession.get(userid);
         	}
         }else if(Objects.equals(role, "server")){
         	if(DistributionUtil.serverSession.containsKey(userid)) {
+        		sessions = DistributionUtil.serverSession.get(userid);
+        	}else {
         		sessions = new CopyOnWriteArrayList<Session>();
         		DistributionUtil.serverSession.putIfAbsent(userid, sessions);
-        	}else {
-        		sessions = DistributionUtil.serverSession.get(userid);
         	}
         }
         return sessions;
     }
 
     @OnClose
-    public void onClose(Session session,@PathParam("role")String role,@PathParam("userid")String userid)
-    {
+    public void onClose(Session session,@PathParam("role")String role,@PathParam("userid")String userid){
         onlineNumber--;
         List<Session> sessions = getSessions(role, userid);
         sessions.remove(session);
