@@ -14,7 +14,7 @@ import com.yuanjun.weixindemo.util.WeiXinUtil;
 
 @RestController
 public class TestController {
-	@RequestMapping(value = "hello",method=RequestMethod.GET)
+	@RequestMapping(value = "/hello",method=RequestMethod.GET)
 	public String login(HttpServletRequest request,HttpServletResponse response){
 		System.out.println("success");
 		String accessToken  = WeiXinUtil.getAccess_Token();
