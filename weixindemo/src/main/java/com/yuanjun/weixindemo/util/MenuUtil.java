@@ -44,9 +44,9 @@ public class MenuUtil {
 		
 		//创建跳转型一级菜单
 		ViewButton button21 = new ViewButton();
-		button21.setName("百度一下");
+		button21.setName("客服服务");
 		button21.setType("view");
-		button21.setUrl("http://yundou.store/static/index.html");
+		button21.setUrl("http://haozhen.free.idcfengye.com/weixin/weixin/index.html");
 		
 		//创建其他类型的菜单与click型用法一致
 		ClickButton button31 = new ClickButton();
