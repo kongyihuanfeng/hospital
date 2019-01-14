@@ -22,6 +22,27 @@ import org.dom4j.io.SAXReader;
  */
 public class MessageUtil {
 	/**
+	 * 	被关注：subscribe
+	取消关注：unsubscribe
+	文本：text
+	图片：image
+	语音：voice
+	视频：video
+	小视频：shortvideo
+	地理位置：location
+	连接消息：link
+	 */
+	public static final String RESP_MESSAGE_TYPE_TEXT = null;
+	public static final Object REQ_MESSAGE_TYPE_TEXT = "text";
+	public static final Object REQ_MESSAGE_TYPE_IMAGE = "image";
+	public static final Object REQ_MESSAGE_TYPE_LOCATION = "location";
+	public static final Object REQ_MESSAGE_TYPE_LINK = "link";
+	public static final Object REQ_MESSAGE_TYPE_VOICE = "voice";
+	public static final Object REQ_MESSAGE_TYPE_EVENT = "event";
+	public static final Object EVENT_TYPE_SUBSCRIBE = "subscribe";
+	public static final Object EVENT_TYPE_UNSUBSCRIBE = "unsubscribe";
+	public static final Object EVENT_TYPE_CLICK = "CLICK";
+	/**
 	 * 将微信的请求中参数转成map
 	 * @param request
 	 * @return
@@ -62,5 +83,7 @@ public class MessageUtil {
 		buffer.append("2.翻译apple\n");
 		return buffer.toString();
 	}
+	
+
 	
 }
