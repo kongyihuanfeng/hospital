@@ -2,8 +2,6 @@ package com.yuanjun.weixindemo.util;
 
 import java.io.IOException;
 
-import net.sf.json.JSONObject;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -13,17 +11,18 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import redis.clients.jedis.Jedis;
-
 import com.yuanjun.weixindemo.bean.AccessToken;
+import com.yuanjun.weixindemo.constant.UrlType;
 import com.yuanjun.weixindemo.redis.RedisUtil;
+
+import net.sf.json.JSONObject;
+import redis.clients.jedis.Jedis;
 
 /**
  * 
  * 类名称: WeiXinUtil
  * 类描述:
- * @author yuanjun
- * 创建时间:2017年12月8日下午4:38:42
+ * @author xingwei
  */
 public class WeiXinUtil {
 	/**
@@ -34,8 +33,6 @@ public class WeiXinUtil {
 	 * 开发者秘钥
 	 */
 	private static final String APPSECRET="abeab1552e45e3c5f2bc1748cb273949";
-	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?"
-			+ "grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	/**
 	 * 处理doget请求
 	 * @param url
@@ -83,7 +80,7 @@ public class WeiXinUtil {
 		System.out.println("从接口中获取");
 		Jedis jedis  = RedisUtil.getJedis();
 		AccessToken token = new AccessToken();
-		String url = ACCESS_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
+		String url = UrlType.ACCESS_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);
 		JSONObject json = doGetstr(url);
 		if(json!=null){
 			token.setAccess_token(json.getString("access_token"));

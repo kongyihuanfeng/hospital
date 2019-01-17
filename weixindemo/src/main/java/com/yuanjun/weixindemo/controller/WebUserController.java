@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,14 +28,14 @@ public class WebUserController {
 	private IWebUserService webUserService;
 	
 	@PostMapping(value="login")
-	public String login(HttpServletRequest request,@RequestParam("name")String name,@RequestParam("password")String password,Model model){
+	public String login(HttpServletRequest request,@RequestParam("name")String name,
+			@RequestParam("password")String password,Model model){
 		Map<String, Object> result = new HashMap<String, Object>();
 		WebUser user = webUserService.getWebUser(name);
 		String code = "0";
 		boolean state = false;
 		String message = "";
 		HttpSession session = request.getSession();
-		Object u = session.getAttribute(LoginInterceptor.SESSION_KEY_PREFIX);
 		if(Objects.equals(user, null)){
 			message = "当前用户不存在";
 		}else if(Objects.equals(password, user.getPassword())){
@@ -73,6 +74,13 @@ public class WebUserController {
 		
 		return GsonUtil.getGson().toJson(result);
 	}
+	
+	@GetMapping(value="loginout")
+	public String loginout(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		session.removeAttribute(LoginInterceptor.SESSION_KEY_PREFIX);
+		return "redirect:/admin/index/login.html";
+	};
 	
 	public String getAllUser(){
 		return null;

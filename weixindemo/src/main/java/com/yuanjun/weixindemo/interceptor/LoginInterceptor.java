@@ -21,7 +21,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
-        if (request.getSession().getAttribute("SESSION_KEY_PREFIX")==null)  {
+        if (request.getSession().getAttribute(SESSION_KEY_PREFIX)==null)  {
             response.sendRedirect(urlPre+"/admin/index/login.html");  
             return false;  
         }

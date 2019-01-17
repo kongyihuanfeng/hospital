@@ -122,7 +122,7 @@ public class ChatInformationEndpoint {
     		distributionService.clientSendMessage(userid, message);
         }else if(Objects.equals(role, "server")) {
         	ServerMessage serverMessage = GsonUtil.getGson().fromJson(message, ServerMessage.class);
-        	distributionService.serverSendMessage(serverMessage.getUserid(), serverMessage.getMessage());
+        	distributionService.serverSendMessage(userid, serverMessage);
         }
     }
 

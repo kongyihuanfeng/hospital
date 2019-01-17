@@ -13,7 +13,7 @@ var app = {
 
     initData : function(){
         var that = this;
-        that.webSocketUrl = "ws://localhost:80/weChat/client/001";
+        that.webSocketUrl = "ws://47.104.189.235/weixin/weChat/client/20201";
         that.connectServer();
     },
     initEvent : function(){
@@ -29,6 +29,7 @@ var app = {
         that.$SendBtn.click(function() {
             var message = that.$messageText.val();
             that.sendMessage(message);
+            that.$messageText.val('');
         })
     },
     connectServer : function(){
@@ -59,12 +60,13 @@ var app = {
         var that = this;
     },
 
-    onMessage : function(message){
+    onMessage : function(data){
         var that = this;
+        var message  = JSON.parse(data);
         that.renderSend({
             type:'send',
-            imageUrl : that.imgarr[0],
-            message : message,
+            imageUrl : message.avatar,
+            message : message.message,
         });
     },
 

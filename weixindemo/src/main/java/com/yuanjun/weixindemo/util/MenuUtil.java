@@ -37,16 +37,29 @@ public class MenuUtil {
 	public static String initMenu(){
 		String result = "";
 		//创建点击一级菜单
-		ClickButton button11 = new ClickButton();
-		button11.setName("往期活动");
-		button11.setKey("11");
-		button11.setType("click");
+		ViewButton button11 = new ViewButton();
+		button11.setName("美的空调");
+		button11.setType("view");
+		button11.setUrl("https://mp.weixin.qq.com/s/8D3hA6ELJ_Euo1quhMRtRA");
+		ViewButton button12 = new ViewButton();
+		button12.setName("格力空调");
+		button12.setType("view");
+		button12.setUrl("https://mp.weixin.qq.com/s/8D3hA6ELJ_Euo1quhMRtRA");
+		ClickButton button13 = new ClickButton();
+		button13.setName("点一下");
+		button13.setType("click");
+		button13.setKey("1");
+		//封装到一级菜单
+		Button button1 = new Button();
+		button1.setName("空调类型");
+		button1.setType("click");
+		button1.setSub_button(new Button[]{button11,button12,button13});
 		
 		//创建跳转型一级菜单
 		ViewButton button21 = new ViewButton();
 		button21.setName("客服服务");
 		button21.setType("view");
-		button21.setUrl("http://haozhen.free.idcfengye.com/weixin/weixin/index.html");
+		button21.setUrl("http://yundou.store/weixin/weixin/index.html");
 		
 		//创建其他类型的菜单与click型用法一致
 		ClickButton button31 = new ClickButton();
@@ -60,14 +73,14 @@ public class MenuUtil {
 		button32.setType("location_select");
 		
 		//封装到一级菜单
-		Button button = new Button();
-		button.setName("菜单");
-		button.setType("click");
-		button.setSub_button(new Button[]{button31,button32});
+		Button button3 = new Button();
+		button3.setName("菜单");
+		button3.setType("click");
+		button3.setSub_button(new Button[]{button31,button32});
 		
 		//封装菜单
 		Menu menu = new Menu();
-		menu.setButton(new Button[]{button11,button21,button});
+		menu.setButton(new Button[]{button1,button21,button3});
 		return JSONObject.fromObject(menu).toString();
 	}
 }
