@@ -1,6 +1,6 @@
 package com.yuanjun.weixindemo.service.distribution;
 
-
+import com.yuanjun.weixindemo.model.ServerMessage;
 
 public interface InformationDistributionService {
 	
@@ -17,6 +17,6 @@ public interface InformationDistributionService {
 	public void getClientSession(String serveruserid,String clientuserid);
 	
 	
-	public void serverSendMessage(String serveruserid,String message);
+	public void serverSendMessage(String serveruserid,ServerMessage serverMessage);
 	
 }

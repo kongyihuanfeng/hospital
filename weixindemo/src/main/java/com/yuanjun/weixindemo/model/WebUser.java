@@ -29,5 +29,16 @@ public class WebUser {
 	private String remark;
 	
 	private Integer deleflag;
+	
+	//头像路径
+	private String photoPath;
+	
+	//角色  0 管理员 1客服 2客户
+	private String role;
 
+	//个人签名
+	private String sign;
+	
+	//在线状态    若值为offline代表离线，online或者不填为在线
+	private String status;
 }

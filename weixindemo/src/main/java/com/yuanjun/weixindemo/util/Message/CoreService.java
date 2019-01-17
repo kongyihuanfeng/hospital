@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.yuanjun.weixindemo.translate.TransApi;
 import com.yuanjun.weixindemo.util.TulingApiUtil;
+import com.yuanjun.weixindemo.util.WxUserUtil;
 
 /**
  * 处理微信发送的消息。
@@ -80,6 +81,7 @@ public class CoreService {
 				// 订阅
 				if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 					respContent = "谢谢您的关注！";
+					//WxUserUtil.getUserInfo(accessToken, openId);
 				}
 				// 取消订阅
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
