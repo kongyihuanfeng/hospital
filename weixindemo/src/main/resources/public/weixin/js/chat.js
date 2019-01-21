@@ -1,6 +1,8 @@
 var app = {
+	currentUrl:"/weixin/chatService/getCurrentUserInfo",
     webSocketUrl : '',
     wsServer : null,
+    mine:{},
     imgarr : ['images/touxiang.png', 'images/touxiangm.png'],
     $container : $('.message'),
     $messageText : $('#messageText'),
@@ -13,8 +15,16 @@ var app = {
 
     initData : function(){
         var that = this;
-        that.webSocketUrl = "ws://47.104.189.235/weixin/weChat/client/20201";
-        that.connectServer();
+        $.get(that.currentUrl, function(data){
+			  var result = JSON.parse(data);
+			  if(result.mine){
+				  that.mine = result.mine;
+				  that.webSocketUrl = "ws://127.0.0.1/weixin/weChat/client/"+that.mine.id;
+				  that.connectServer();
+			  }else{
+				  window.location.href="/weixin/admin/index/login.html";
+			  }
+		}); 
     },
     initEvent : function(){
         var that = this;
@@ -63,22 +73,37 @@ var app = {
     onMessage : function(data){
         var that = this;
         var message  = JSON.parse(data);
-        that.renderSend({
-            type:'send',
-            imageUrl : message.avatar,
-            message : message.message,
-        });
+        if(message.msgType=='1'){//对话消息
+        	that.renderSend({
+        		type:'send',
+        		imageUrl : message.avatar,
+        		message : message.message,
+        	});
+        }else if(message.msgType=='2'){//系统消息
+        	that.renderSysMsg({
+        		time : message.time,
+        		message : message.message,
+        	});
+        }
     },
+    
+    
 
     onClose : function(){
         var that = this;
+    },
+    
+    adjustChatDataShow : function(){
+    	$('body').animate({
+            scrollTop: $('.message').outerHeight() - window.innerHeight
+        }, 200)
     },
 
     sendMessage : function(message){
         var that = this;
         that.renderSend({
             type:'show',
-            imageUrl : that.imgarr[1],
+            imageUrl : that.mine.avatar,
             message : message,
         });
         if(that.wsServer)
@@ -94,11 +119,26 @@ var app = {
         }, 200)
     },
 
+    renderSysMsg :function(data){
+    	var that = this;
+        var html = that.systemMessageHtml(data);
+        that.$container.append(html);
+        $('body').animate({
+            scrollTop: that.$container.outerHeight() - window.innerHeight
+        }, 200)
+    },
     messageHtml : function(data){
         var that = this;
         var html = "<div class='{{type}}'><div class='msg'><img src={{imageUrl}} />" 
                     + "<p><i class='msg_input'></i>{{message}}</p></div></div>";
         return that.renderData(html,data);
+    },
+    
+    systemMessageHtml:function(data){
+    	var that = this;
+    	var html = '<div class="system"><div class="time">{{time}}</div>'+
+    				'<div class="sysmsg"><p>{{message}}</p></div></div>';
+    	return that.renderData(html,data);
     },
 
     renderData : function(template,data){

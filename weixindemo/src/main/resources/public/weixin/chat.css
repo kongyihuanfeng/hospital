@@ -101,7 +101,7 @@ body{
     margin-top:0.2rem;
     margin-right:0.2rem;
 }
-.send:after,.show:after,.msg:after{
+.send:after,.show:after,.msg:after,.sysmsg::after {
 	content: "";
 	clear: both;
 	display: table;	
@@ -110,6 +110,15 @@ body{
 .msg>img{
 	width: 0.8rem;
 	float: left;
+}
+.sysmsg>p{
+	margin:0.2rem auto;
+	padding: 0.25rem;
+	background: #fff;
+	font-size: 0.15rem;
+	position: relative;
+	max-width:3rem ;
+	box-sizing: border-box;
 }
 .msg>p{
 	float: left;
@@ -143,7 +152,7 @@ body{
 	transform:rotate(180deg);
 	-ms-transform:rotate(180deg); 	/* IE 9 */
 	-moz-transform:rotate(180deg); 	/* Firefox */
-	-webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+	-webkit-transform:rotate(180deg); /* Safari 鍜� Chrome */
 	-o-transform:rotate(180deg); 	/* Opera */
 }
 .send,.show{

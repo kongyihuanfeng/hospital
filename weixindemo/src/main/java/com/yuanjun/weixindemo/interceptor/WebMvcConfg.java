@@ -19,13 +19,12 @@ public class WebMvcConfg implements WebMvcConfigurer {
 		LoginInterceptor loginInterceptor = new LoginInterceptor();
 		loginInterceptor.setUrlPre(urlPre);
 		 registry.addInterceptor(loginInterceptor)
-		 		 .addPathPatterns("/admin/index/index.html")
+		 		 .addPathPatterns("/admin/index/index.html","/weixin/index/index.html")
 		 		 .excludePathPatterns("/","/admin/index/login.html");
 	}
 	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		
 		registry.addViewController("/").setViewName("forward:/admin/index/login.html");
 	}
 }

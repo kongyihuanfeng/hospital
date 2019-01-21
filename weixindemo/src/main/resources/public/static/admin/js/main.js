@@ -69,7 +69,7 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog','layim'], function(lay
 	});
 	var app = {
 		currentUrl:"/weixin/chatService/getCurrentUserInfo",
-		webSocketUrl:"ws://47.104.189.235/weixin/weChat/server/",
+		webSocketUrl:"ws://127.0.0.1/weixin/weChat/server/",
 		mineChatObj : null,
 		mine : null,
 		chatMensMap:{},
@@ -90,6 +90,8 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog','layim'], function(lay
 					    "mine":that.mine
 					  });
 					  that.connectWebSocket();
+				  }else{
+					  window.location.href="/weixin/admin/index/login.html";
 				  }
 			});  
 		},
@@ -145,6 +147,7 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog','layim'], function(lay
 		
 		onmessage : function(data){
 			var that = this;
+			debugger;
 			var result = JSON.parse(data);
 			if(!that.chatMensMap[result.id]){
 				that.chatMens.push({
@@ -183,10 +186,14 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog','layim'], function(lay
 	app.initPage();
 	
 	$('#loginout').click(function(){
+		debugger;
 		$.ajax({
-			url:'webUser/loginout',
-			async:false,
-		})				
+			url:'/weixin/webUser/loginout',
+			async:true,
+			success:function(data){
+				window.location.href="/weixin/admin/index/login.html";
+			}
+		})		
 	})
 
 	//示范一个公告层
