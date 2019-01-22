@@ -18,6 +18,8 @@ public class WebUser {
 	
 	private String name;
 	
+	private String code;
+	
 	private String email;
 	
 	private String password;

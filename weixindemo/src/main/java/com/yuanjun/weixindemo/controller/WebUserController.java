@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yuanjun.weixindemo.interceptor.LoginInterceptor;
 import com.yuanjun.weixindemo.model.WebUser;
@@ -26,6 +27,7 @@ public class WebUserController {
 
 	@Autowired
 	private IWebUserService webUserService;
+
 	
 	@PostMapping(value="login")
 	public String login(HttpServletRequest request,@RequestParam("name")String name,
@@ -40,20 +42,53 @@ public class WebUserController {
 			message = "当前用户不存在";
 		}else if(Objects.equals(password, user.getPassword())){
 			session.setAttribute(LoginInterceptor.SESSION_KEY_PREFIX, user);
-			 code = "1";
-			 state = true;
+			code = "1";
+			state = true;
 		}else{
 			message = "登录不成功";
 		}
-		result.put("code", code);
-		result.put("state", state);
-		result.put("message", message);
+		result.put("code", code);//状态码 1成功 0 有问题
+		result.put("state", state);//状态 true成功
+		result.put("message", message);//错误信息
 		model.addAllAttributes(result);
-		if(state)
-			return "redirect:/admin/index/index.html";
-		else
+		if(state){
+			if(user.getRole().equals("2")) {
+				return "redirect:/weixin/index/index.html";
+			}else {
+				return "redirect:/admin/index/index.html";
+			}
+		}else
 			return "redirect:/admin/index/login.html";
 	}
+	
+	@RequestMapping("/customerChat")
+	public String onlineCustomerService(HttpServletRequest request,@RequestParam("userid")String userid,Model model){
+		Map<String, Object> result = new HashMap<String, Object>();
+		WebUser user = webUserService.getWebUser(userid);
+		String code = "0";
+		boolean state = false;
+		String message = "";
+		HttpSession session = request.getSession();
+		if(Objects.equals(user, null)){
+			message = "当前用户不存在";
+		}else{
+			session.setAttribute(LoginInterceptor.SESSION_KEY_PREFIX, user);
+			code = "1";
+			state = true;
+		}
+		result.put("code", code);//状态码 1成功 0 有问题
+		result.put("state", state);//状态 true成功
+		result.put("message", message);//错误信息
+		model.addAllAttributes(result);
+		return "redirect:/weixin/index/index.html";
+	};
+	
+	/**
+	 * 用于注册用户
+	 * @param user
+	 * @return
+	 */
+	@ResponseBody
 	@PostMapping(value="register")
 	public String register(WebUser user){
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -75,11 +110,13 @@ public class WebUserController {
 		return GsonUtil.getGson().toJson(result);
 	}
 	
+	
+	@ResponseBody
 	@GetMapping(value="loginout")
 	public String loginout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute(LoginInterceptor.SESSION_KEY_PREFIX);
-		return "redirect:/admin/index/login.html";
+		return "success";
 	};
 	
 	public String getAllUser(){
