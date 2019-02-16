@@ -69,7 +69,8 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog','layim'], function(lay
 	});
 	var app = {
 		currentUrl:"/weixin/chatService/getCurrentUserInfo",
-		webSocketUrl:"ws://127.0.0.1/weixin/weChat/server/",
+		serviceDomainUrl:"/weixin/chatService/getServiceDomain",
+		webSocketUrl:"/weixin/weChat/server/",
 		mineChatObj : null,
 		mine : null,
 		chatMensMap:{},
@@ -84,6 +85,7 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog','layim'], function(lay
 			$.get(that.currentUrl, function(data){
 				  var result = JSON.parse(data);
 				  if(result.mine){
+					  debugger;
 					  that.mine = result.mine;
 					  that.mineChatObj = layim.config({
 					    brief: true, //是否简约模式（如果true则不显示主面板）
@@ -97,25 +99,29 @@ layui.use(['layer', 'form', 'element', 'jquery', 'dialog','layim'], function(lay
 		},
 		connectWebSocket:function(){
 			var that = this;
-			 // 初始化一个 WebSocket 对象 /weChat/{role}/{userid}
-			 that.ws = new WebSocket(that.webSocketUrl+that.mine.id);
+			// 初始化一个 WebSocket 对象 /weChat/{role}/{userid}
+			$.get(that.serviceDomainUrl, function(domain){
 				
+				that.ws = new WebSocket("ws://"+domain+that.webSocketUrl+that.mine.id);
 				// 建立 web socket 连接成功触发事件
-			 that.ws.onopen = function () {
-				  // 使用 send() 方法发送数据
+				that.ws.onopen = function () {
+					// 使用 send() 方法发送数据
 					that.onopen();
 				};
 				
 				// 接收服务端数据时触发事件
 				that.ws.onmessage = function (evt) {
-				  var received_msg = evt.data;
-				  that.onmessage(received_msg);
+					var received_msg = evt.data;
+					that.onmessage(received_msg);
 				};
 				
 				// 断开 web socket 连接成功触发事件
 				that.ws.onclose = function () {
-				  that.onclose();
+					that.onclose();
 				};
+			})
+			
+				
 		},
 		initEvent: function(){
 			var that = this;

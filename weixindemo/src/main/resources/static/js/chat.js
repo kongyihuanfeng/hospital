@@ -1,10 +1,12 @@
 var app = {
-	currentUrl:"/weixin/chatService/getCurrentUserInfo",
+	currentUrl:"/weixin/chatService/getClientInfo",
+	serviceDomainUrl:"/weixin/chatService/getServiceDomain",
     webSocketUrl : '',
     wsServer : null,
     mine:{},
     imgarr : ['images/touxiang.png', 'images/touxiangm.png'],
     $container : $('.message'),
+    clientid:$('#clientId').val(),
     $messageText : $('#messageText'),
     $SendBtn : $('.footer p'),
     initPage : function(){
@@ -14,16 +16,21 @@ var app = {
     },
 
     initData : function(){
-    	debugger;
         var that = this;
-        $.get(that.currentUrl, function(data){
-			  var result = JSON.parse(data);
-			  if(result.mine){
-				  that.mine = result.mine;
-				  that.webSocketUrl = "ws://127.0.0.1/weixin/weChat/client/"+that.mine.id;
-				  that.connectServer();
-			  }
-		}); 
+        if(that.clientid){
+        	$.get(that.currentUrl,{"userId":that.clientid}, function(data){
+        		var result = JSON.parse(data);
+        		if(result.mine){
+        			that.mine = result.mine;
+        			$('.username').html(that.mine.username);
+        			that.webSocketUrl = "/weixin/weChat/client/"+that.mine.id;
+        			that.connectServer();
+        		}
+        	}); 
+        }else{
+        	window.alert("对不起你没有用户ID")
+        	window.location.reload("/weixin/admin/index/index.html");
+        }
     },
     initEvent : function(){
         var that = this;
@@ -44,7 +51,8 @@ var app = {
     connectServer : function(){
         var that = this;
         try{
-            that.wsServer = new WebSocket(that.webSocketUrl);
+			$.get(that.serviceDomainUrl, function(domain){
+            that.wsServer = new WebSocket("ws://"+domain+that.webSocketUrl);
             that.wsServer.onopen = function () {
                 // 使用 send() 方法发送数据
                 that.onOpen();
@@ -59,6 +67,7 @@ var app = {
             that.wsServer.onclose = function () {
                 that.onClose();
             };
+			});
         }catch(err){
             console.log('当前客户端不支持webSocket');
         }

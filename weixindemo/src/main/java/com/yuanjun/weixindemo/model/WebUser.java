@@ -43,4 +43,6 @@ public class WebUser {
 	
 	//在线状态    若值为offline代表离线，online或者不填为在线
 	private String status;
+	
+	private String openid;
 }

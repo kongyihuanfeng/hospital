@@ -59,7 +59,7 @@ public class MenuUtil {
 		ViewButton button21 = new ViewButton();
 		button21.setName("客服服务");
 		button21.setType("view");
-		button21.setUrl("http://yundou.store/weixin/weixin/index.html");
+		button21.setUrl("http://www.yundou.store/weixin/webUser/wxAuth");
 		
 		//创建其他类型的菜单与click型用法一致
 		ClickButton button31 = new ClickButton();

@@ -20,8 +20,7 @@ public class WxUserServiceImpl implements IWxUserService{
 
 	@Override
 	public WxUser getWxUser(String openid) {
-		// TODO Auto-generated method stub
-		return wxUserDao.getOne(openid);
+		return wxUserDao.findById(openid).orElse(null);
 	}
 
 	@Override
