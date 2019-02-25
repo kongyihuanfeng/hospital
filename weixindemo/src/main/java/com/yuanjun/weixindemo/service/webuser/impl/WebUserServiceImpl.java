@@ -43,4 +43,14 @@ public class WebUserServiceImpl implements IWebUserService{
 		webUserDao.deleteById(id);
 	}
 
+	@Override
+	public WebUser getWebUserById(String userid) {
+		return webUserDao.findById(userid).orElse(null);
+	}
+	
+	@Override
+	public WebUser findWbeUserByOpenId(String openId) {
+		return webUserDao.findByOpenidAndDeleflag(openId, 0);
+	}
+
 }

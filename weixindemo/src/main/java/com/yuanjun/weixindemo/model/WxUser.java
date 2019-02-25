@@ -20,7 +20,7 @@ public class WxUser {
 	// 用户的标识
 	@Id
 	@Column(length=32)
-	  private String openId;
+	  private String openid;
 	  // 关注状态（1是关注，0是未关注），未关注时获取不到其余信息
 	  private int subscribe;
 	  // 用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间
@@ -39,7 +39,7 @@ public class WxUser {
 	  private String language;
 	  // 用户头像
 	  @Column(length=200)
-	  private String headImgUrl;
+	  private String headimgurl;
 	  //备注
 	  private String remark;
 	  //分组id
@@ -48,5 +48,7 @@ public class WxUser {
 	  private String subscribe_scene;
 	  private int qr_scene;
 	  private String qr_scene_str;
-	  
+	 
+	  //只有在用户将公众号绑定到微信开放平台帐号后
+	  private String unionid;
 }

@@ -67,7 +67,7 @@ public class ChatInformationEndpoint {
         	roleName = "客服人员";
         	distributionService.serverClose(userid);
         }
-        System.out.println("关闭一条连接  当前连接身份是"+roleName+ " 当前连接数" + onlineNumber);
+        System.out.println("关闭一条连接  当前关闭连接身份是"+roleName+ " 尚存连接数" + onlineNumber);
     }
 
     @OnMessage

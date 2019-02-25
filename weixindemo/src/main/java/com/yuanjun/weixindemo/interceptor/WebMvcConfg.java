@@ -14,15 +14,21 @@ public class WebMvcConfg implements WebMvcConfigurer {
 	private  String urlPre;
 	
 	
+	/**
+	 * 对管理页面进行拦截
+	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		LoginInterceptor loginInterceptor = new LoginInterceptor();
 		loginInterceptor.setUrlPre(urlPre);
 		 registry.addInterceptor(loginInterceptor)
-		 		 .addPathPatterns("/admin/index/index.html","/weixin/index/index.html")
+		 		 .addPathPatterns("/admin/index/index.html")
 		 		 .excludePathPatterns("/","/admin/index/login.html");
 	}
 	
+	/**
+	 * 首页配置
+	 */
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("forward:/admin/index/login.html");

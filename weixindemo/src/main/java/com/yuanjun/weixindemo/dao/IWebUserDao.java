@@ -14,4 +14,6 @@ public interface IWebUserDao extends JpaRepository<WebUser, String> {
 	@Query("update WebUser set password=?2 where name=?1")
 	public void changePassword(String name,String password);
 
+	
+	public WebUser findByOpenidAndDeleflag(String openid,Integer deleflag);
 }

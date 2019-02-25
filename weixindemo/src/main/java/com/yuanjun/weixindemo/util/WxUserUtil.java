@@ -26,7 +26,7 @@ public class WxUserUtil {
 			try {
 				weixinUserInfo = new WxUser();
 				// 用户的标识
-				weixinUserInfo.setOpenId(jsonObject.getString("openid"));
+				weixinUserInfo.setOpenid(jsonObject.getString("openid"));
 				// 关注状态（1是关注，0是未关注），未关注时获取不到其余信息
 				weixinUserInfo.setSubscribe(jsonObject.getInt("subscribe"));
 				// 用户关注时间
@@ -44,10 +44,10 @@ public class WxUserUtil {
 				// 用户的语言，简体中文为zh_CN
 				weixinUserInfo.setLanguage(jsonObject.getString("language"));
 				// 用户头像
-				weixinUserInfo.setHeadImgUrl(jsonObject.getString("headimgurl"));
+				weixinUserInfo.setHeadimgurl(jsonObject.getString("headimgurl"));
 			} catch (Exception e) {
 				if (0 == weixinUserInfo.getSubscribe()) {
-					log.error("用户{}已取消关注", weixinUserInfo.getOpenId());
+					log.error("用户{}已取消关注", weixinUserInfo.getOpenid());
 				} else {
 					int errorCode = jsonObject.getInt("errcode");
 					String errorMsg = jsonObject.getString("errmsg");

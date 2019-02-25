@@ -2,22 +2,30 @@ package com.yuanjun.weixindemo.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
-import com.yuanjun.weixindemo.translate.TransApi;
+import com.yuanjun.weixindemo.bean.AccessToken;
+import com.yuanjun.weixindemo.constant.UrlType;
+import com.yuanjun.weixindemo.model.WxUser;
+import com.yuanjun.weixindemo.service.webuser.IWxUserService;
 import com.yuanjun.weixindemo.util.CheckUtil;
-import com.yuanjun.weixindemo.util.TulingApiUtil;
+import com.yuanjun.weixindemo.util.PlaceholderUtils;
 import com.yuanjun.weixindemo.util.Message.CoreService;
-import com.yuanjun.weixindemo.util.Message.ImageMessageUtil;
-import com.yuanjun.weixindemo.util.Message.MessageUtil;
-import com.yuanjun.weixindemo.util.Message.TextMessageUtil;
 
 
 
@@ -30,6 +38,8 @@ import com.yuanjun.weixindemo.util.Message.TextMessageUtil;
  */
 @RestController
 public class WeixinLoginController {
+	
+	
 	@RequestMapping(value = "wxdemo",method=RequestMethod.GET)
 	public void login(HttpServletRequest request,HttpServletResponse response){
 		System.out.println("success");
@@ -51,11 +61,15 @@ public class WeixinLoginController {
 		}
 		
 	}
+	
 	@RequestMapping(value = "wxdemo",method=RequestMethod.POST)
 	public void dopost(HttpServletRequest request,HttpServletResponse response){
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = null;
 		String message = CoreService.processRequest(request);
+		if(message==null) {
+			return;
+		}
 		try {
 			out = response.getWriter();
 			out.write(message);
